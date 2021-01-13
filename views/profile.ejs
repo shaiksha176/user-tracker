@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/css/profile.css">
+    <style>
+        .modal-button {
+            background-color: #f5e50c;
+            color: var(--white-neutral-color);
+            /* display: inline-block; */
+            font-size: 1.2rem;
+            border: none;
+            outline: none;
+            padding: 5px 15px;
+            letter-spacing: 2px;
+
+        }
+
+        .modal-label {
+            display: block;
+            font-size: 20px;
+            margin-top: 10px;
+            color: var(--black-neutral-color);
+
+        }
+
+        .modal-input {
+            font-size: 1.2rem;
+            width: 100%;
+            padding: 5px 15px;
+            color: var(--black-neutral-color);
+
+        }
+
+        .close-button {
+            font-size: 40px;
+            color: var(--black-neutral-color);
+            background-color: transparent;
+        }
+
+        .toggle-modal {
+            opacity: 1;
+            transform: none;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul>
+
+                <li><a href="/uploads">UploadImage</a></li>
+
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="user-details">
+        <img src="../images/Humaaans - 2 Characters.png" alt="">
+        <div>
+            <p>
+                <%= name %>
+            </p>
+            <p>
+                <%= password %>
+            </p>
+            <p id="update" class="modal-pop" style="cursor: pointer;">update info</p>
+
+        </div>
+
+    </div>
+    <div class="modal">
+        <div class="modal-header">
+            <div>
+                <button class="close-button">&times</button>
+            </div>
+        </div>
+        <form action="/update" method="POST" id="update-user">
+            <div class="modal-body">
+
+                <div>
+                    <label for="" class="modal-label">Name</label>
+                    <input type="text" name="name" class="modal-input" value="<%=name%>" id="name">
+                </div>
+                <div>
+                    <label for="" class="modal-label">Password</label>
+                    <input type="password" name="password" class="modal-input" value="<%=password%>" id="password">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit">submit now</button>
+            </div>
+        </form>
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+        integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+        crossorigin="anonymous"></script>
+
+    <script>
+        const open_modal = document.querySelector('.modal-pop')
+        const close_modal = document.querySelector('.close-button')
+        const modal = document.querySelector('.modal')
+        const update_User = document.querySelector('#update-user')
+        const name = document.querySelector('#name')
+        const password = document.querySelector('#password')
+        open_modal.addEventListener('click', () => {
+            modal.classList.toggle('toggle-modal')
+        })
+        close_modal.addEventListener('click', () => {
+            console.log('clicked')
+            modal.classList.remove('toggle-modal')
+        })
+        window.onclick = (event) => {
+            //  console.log(event.target)
+            if (event.target == modal)
+
+                modal.style.display = "none"
+        }
+
+        update_User.addEventListener('submit', (event) => {
+            event.preventDefault()
+            console.log(name.value, password.value)
+            axios.post('/update', { name: name.value, password: password.value }).then(res => {
+                console.log(res.data)
+                console.log('user data successfully updated')
+                window.location.reload()
+            }).catch(err => {
+                console.log(err)
+            })
+            modal.classList.remove('toggle-modal')
+
+        })
+    </script>
+</body>
+
+</html>

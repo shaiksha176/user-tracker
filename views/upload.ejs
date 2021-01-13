@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploads</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            line-height: 1.25;
+        }
+
+        :root {
+            --accent-color: #f89a1a;
+            --black-neutral-color: #12130c;
+            --white-neutral-color: #f8fbed;
+            --complementary-color: #1c45e3;
+            --complementary-background-color: #7e95ef;
+        }
+
+        body {
+            background-color: var(--white-neutral-color);
+
+        }
+
+        header {
+
+            width: 100%;
+            margin: 0 auto;
+            height: 100px;
+            padding: 1.2rem 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-size: 1.2rem;
+            /* border: 1px solid green; */
+        }
+
+        a {
+            text-decoration: none;
+            display: inline-block;
+            color: black;
+            margin-left: 20px;
+
+        }
+
+        li {
+            list-style: none;
+            display: inline-block;
+        }
+
+        nav {
+            width: 70%;
+            margin: 0 auto;
+            /* border: 1px solid rgb(90, 83, 83); */
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            /* background-color: #f0f879; */
+
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+
+
+        }
+
+
+        button {
+            background-color: #f5e50c;
+            font-size: 1.2rem;
+            border: 1px solid white;
+            outline: none;
+            padding: 6px 12px;
+            letter-spacing: 2px;
+            margin-left: 25px;
+            color: white;
+
+        }
+
+
+
+        .container {
+            display: none;
+        }
+
+
+        .bar1,
+        .bar2,
+        .bar3 {
+            width: 35px;
+            height: 5px;
+            background-color: #333;
+            margin: 6px 0;
+            transition: 0.4s;
+        }
+
+        /* Rotate first bar */
+        .change .bar1 {
+            -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+            transform: rotate(-45deg) translate(-9px, 6px);
+        }
+
+        /* Fade out the second bar */
+        .change .bar2 {
+            opacity: 0;
+        }
+
+        /* Rotate last bar */
+        .change .bar3 {
+            -webkit-transform: rotate(45deg) translate(-8px, -8px);
+            transform: rotate(45deg) translate(-8px, -8px);
+        }
+
+
+        .upload-container {
+            width: 70%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 5px;
+            border-top: 5px solid yellow;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+            font-size: 20px;
+        }
+
+        .image-container {
+            width: 70%;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 5px;
+            border-top: 5px solid var(--black-neutral-color);
+            display: flex;
+            flex-wrap: wrap;
+            padding: 2rem 2rem;
+            font-size: 20px;
+        }
+
+        .image {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            margin-left: 20px;
+            margin-bottom: 20px;
+            /* border: 1px solid red; */
+            height: 150px;
+        }
+
+        .image-container img {
+            width: 100px;
+            height: 100px;
+            display: block;
+            /* margin: 0.8rem; */
+            border-radius: 50%;
+        }
+
+        .image-container button {
+            display: block;
+            margin-left: 0;
+        }
+
+        @media screen and (max-width: 600px) {
+            body {
+                background-color: white;
+            }
+
+            header {
+                width: 100%;
+                padding: 0;
+            }
+
+            nav {
+                flex-direction: column;
+                background-color: #f0f879;
+                display: block;
+                width: 100%;
+                height: 10px;
+            }
+
+            /* 
+            .container {
+                display: block;
+            } */
+
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <nav>
+
+            <ul>
+                <li><a href="/profile">Home</a></li>
+
+                <li><a href="/logintracker">Login tracker</a></li>
+                <li><a href="/uploads">ImageUpload</a></li>
+
+                <li><button>Logout</button></li>
+            </ul>
+
+        </nav>
+        <div class="container" onclick="myFunction(this)">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+
+    </header>
+    <div class="upload-container">
+        <form action="/upload/photo" enctype="multipart/form-data" method="POST" id="image-upload">
+            <input type="file" name="image" id="image" />
+            <button type="submit"> UploadImage</button>
+        </form>
+    </div>
+    <div class="image-container">
+        <% images.forEach(image=> { %>
+            <% if (image) { %>
+                <div class="image">
+                    <img src="../uploads/<%=image.img%>" alt="image">
+
+                    <!-- <button>delete</button> -->
+                </div>
+                <% } %>
+
+                    <% }) %>
+
+
+
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+        integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+        crossorigin="anonymous"></script>
+    <script>
+        const ImageUpload = document.querySelector('#image-upload')
+        const Image = document.querySelector('#image')
+        console.log(Image)
+        // ImageUpload.addEventListener('submit', (event) => {
+        //     event.preventDefault()
+        //     //console.log(Image.value.toString())
+        //     axios.post('/upload/photo', { image: Image.value }).then(res => {
+        //         console.log(res.data)
+        //         console.log('user data successfully updated')
+        //         //window.location.reload()
+        //     }).catch(err => {
+        //         console.log(err)
+        //     })
+        // })
+    </script>
+</body>
+
+</html>
